@@ -51,6 +51,9 @@ gem "bootsnap", require: false
 # Use User Authentication function
 gem 'devise'
 
+# Use Translate 'devise'
+gem 'devise-i18n'
+
 # Use Active Hash
 gem 'active_hash'
 
