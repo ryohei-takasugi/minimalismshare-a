@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  app:
+    container_name: rails
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    depends_on: 
+      - postgres
+    volumes:
+      - type: bind
+        source: "./"
+        target: "/root/projects"
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpassword
+      PGUSER: user123
+      PGPASSWORD: password123
+      TZ: "Asia/Tokyo"
+    ports:
+      - 5432:5432
+    volumes:
+      - type: volume
+        source: postgres
+        target: /var/lib/postgresql/data
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    depends_on: 
+      - postgres
+    ports:
+      - 8900:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dev@example.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    volumes:
+      - type: volume
+        source: pgadmin
+        target: /var/lib/jetty/webapps
+volumes:
+  postgres:
+  pgadmin:
